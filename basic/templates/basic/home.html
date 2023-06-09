@@ -1,0 +1,260 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<style>
+
+    body{
+        background-color: #638CB8;
+    }
+
+    input{
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+    }
+
+    input::placeholder {
+    color: #d3d3d3;
+    }
+
+    .submit{
+        background-color: #6BA3E8;
+    }
+
+    .center-column{
+        width:600px;
+        margin: 20px auto;
+        padding:20px;
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 6px 2px 30px 0px rgba(0,0,0,0.75);
+    }
+
+    .item-row{
+        background-color: #906abd;
+        margin: 10px;
+        padding: 20px;
+        border-radius: 3px;
+        color: #fff;
+        font-size: 16px;
+        box-shadow: 0px -1px 10px -4px rgba(0,0,0,0.75);
+    }
+
+    .btn-danger{
+        background-color: #ffae19;
+        border-color: #e59400;
+    }
+
+</style> -->
+
+<style>
+
+    .no-underline{
+        text-decoration: none;
+        color: inherit;
+    }
+</style>
+    
+<div>  
+    {% if user.is_authenticated %}
+    <h1>Hello {{ request.user|title }}</h1>
+    <h3>You have <i>{{ tasks_count }} incomplete task{{ tasks_count|pluralize:'s' }}</i></h3>
+    <!-- <div class="center-column">
+
+        <form method="POST" action="/">
+            {% csrf_token %}
+            {{form.title}}
+            <input class="btn btn-info" type="submit" name="Create Task">
+        </form>
+
+        <div class="task-list"> -->
+        <div>
+            <a href="{% url 'create-task' %}">Add New Item</a>
+            <hr>
+        </div>
+        <div>
+            <table class="table">
+                <caption> Pending List</caption>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Title</th>
+                  <th>Completed</th>
+                  <th>Action</th>
+                  <th>deadline</th>
+
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for task in pending_tasks %}
+                    <tr>
+                    <td>{{forloop.counter}}</td>
+                        <td>
+                                <a href="{% url 'change-status' task.id %}" title="Mark Pending" class="no-underline">
+                                    <span>{{task}}</span>
+                                </a>
+                            </td>
+                        <td>
+                                <a href="{% url 'change-status' task.id %}" title="Mark Completed" class="no-underline">
+                                    <span>{{task.complete}}</span>
+                                </a>
+                            </td>
+                        <td>
+                            <a class="btn btn-sm btn-danger" href="{% url 'delete' task.id %}">Delete</a>
+                            <a class="btn btn-sm btn-info" href="{% url 'update-task' task.id %}">Update</a>
+                        </td>
+                        <td>
+                            {{task.deadline|date:"F d, Y"}}
+                        </td>
+                    </tr>
+                {% empty %}
+                <tr>
+                    No items in list
+                </tr>
+                {%endfor%}
+
+
+              </tbody>
+
+              
+              <table class="table">
+                  <caption>Completed List</caption>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Title</th>
+                  <th>Completed</th>
+                  <th>Action</th>
+                  <th>deadline</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                {% for task in completed_tasks %}
+                    <tr>
+                    <td>{{forloop.counter}}</td>
+                        <td>
+                                <a href="{% url 'change-status' task.id %}" title="Mark Completed" class="no-underline">
+                                    <strike>{{task}}</strike>
+                                </a>
+                        </td>
+                            <td>
+                                <a href="{% url 'change-status' task.id %}" title="Mark Completed" class="no-underline">
+                                    <span>{{task.complete}}</span>
+                                </a>
+                            </td>
+                        <td>
+                            <a class="btn btn-sm btn-danger" href="{% url 'delete' task.id %}">Delete</a>
+                            <a class="btn btn-sm btn-info" href="{% url 'update-task' task.id %}">Update</a>
+                        </td>
+                        <td>
+                            {{task.deadline|date:"F d, Y"}}
+                        </td>
+                    </tr>
+                {% empty %}
+                <tr>
+                    No items in list
+                </tr>
+                {%endfor%}
+
+
+              </tbody>
+
+
+              <table class="table">
+                  <caption>Expired List</caption>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Title</th>
+                  <th>Completed</th>
+                  <th>Action</th>
+                  <th>deadline</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                {% for task in overdue_tasks %}
+                    <tr>
+                    <td>{{forloop.counter}}</td>
+                        <td>
+                                <a href="{% url 'change-status' task.id %}" title="Mark Pending" class="no-underline">
+                                    <span>{{task}}</span>
+                                </a>
+                            </td>
+                        <td>
+                                <a href="{% url 'change-status' task.id %}" title="Mark Completed" class="no-underline">
+                                    <span>{{task.complete}}</span>
+                                </a>
+                            </td>
+                        <td>
+                            <a class="btn btn-sm btn-danger" href="{% url 'delete' task.id %}">Delete</a>
+                            <a class="btn btn-sm btn-info" href="{% url 'update-task' task.id %}">Update</a>
+                        </td>
+                        <td>
+                            {{task.deadline|date:"F d, Y"}}
+                        </td>
+                    </tr>
+                {% empty %}
+                <tr>
+                    <td>
+                        No items in list
+                    </td>
+                </tr>
+                {%endfor%}
+
+
+              </tbody>
+
+            </table>
+          </div>
+        
+    </div>
+    {% else %}
+    <p>login/sign up  to add tasks</p>
+    {% endif %}
+
+<div/>
+
+{% endblock %}
+
+
+<!-- {% for task in tasks %}
+                <tr>
+                  <td>{{forloop.counter}}</td>
+                  <td>{{task.title}}</td>
+                  <td>
+                    {% if task.status == 'C'%}
+                    ✅
+                    {%else%}
+                    🕒
+                    {%endif%}
+                  </td>
+                  <td>
+                    <a class="btn btn-sm btn-danger" href="{% url 'delete' task.id %}">Delete</a>
+                    {% if task.status == 'P'%}
+                    <a href="{% url 'change-status' task.id task.complete %}" title="Mark Completed" class="">
+                        <strike>{{task}}</strike>
+                    </a>
+                    {%else%}
+                    <a href="{% url 'change-status' task.id task.complete %}" title="Mark Pending" class="">
+                        <span>{{task}}</span>
+                    </a>
+                    {%endif%}
+                    <a class="btn btn-sm btn-info" href="{% url 'update-task' task.id %}">Update</a>
+                </td>
+                <td>
+                    {{task.deadline|date:"F d, Y"}}
+                </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <h3>No items in list</h3>
+                </tr>
+                {%endfor%} -->

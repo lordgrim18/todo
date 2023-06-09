@@ -1,0 +1,47 @@
+<style>
+    .main-container{
+        display: grid;
+        grid-template-columns: 1fr 4fr  ;         
+    }
+</style>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo App</title>
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <!-- {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} -->
+        <div class="main-container">
+            
+            <div class="side-bar">
+                {% include 'side_bar.html' %}
+            </div>
+            
+            <div>
+                <h3>main body or something</h3>
+                {% block content %}
+                
+                {% endblock %}
+                <hr>
+                <div>
+                    {% include 'addressbar.html' %}
+                </div>
+            </div>
+        </div>
+        
+
+</body>
+</html>
