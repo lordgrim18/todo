@@ -8,6 +8,8 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Task
 from .forms import TaskForm, UserForm
 from django.utils import timezone
+from datetime import datetime, timedelta
+
 
 # Create your views here.
 def home(request):
@@ -19,9 +21,12 @@ def home(request):
         completed_tasks = Task.objects.filter(task_owner = user, complete=True)
         current_datetime = timezone.now()
         pending_tasks = Task.objects.filter(task_owner = user, complete=False, deadline__gt=current_datetime)
+        pending_tasks_count = pending_tasks.count()
         overdue_tasks = Task.objects.filter(task_owner = user, complete=False, deadline__lt=current_datetime)
+        overdue_tasks_count = overdue_tasks.count()
 
-        context = {'tasks':tasks, 'tasks_count':tasks_count, 'completed_tasks':completed_tasks,                         'pending_tasks':pending_tasks, 'overdue_tasks':overdue_tasks}
+        context = {'tasks':tasks, 'tasks_count':tasks_count, 'completed_tasks':completed_tasks,                         'pending_tasks':pending_tasks, 'overdue_tasks':overdue_tasks, 'pending_tasks_count':pending_tasks_count, 'overdue_tasks_count':overdue_tasks_count}
+       
         return render(request, 'basic/home.html', context)
     else:
         return render(request, 'basic/home.html')
@@ -144,8 +149,39 @@ def deleteTask(request,pk):
     context = {'task': task}
     return render(request, 'basic/delete.html', context)
 
-def aboutPage(request):
-    pass
+@login_required(login_url='login')
+def dueTomorrow(request):
+    user = request.user
+    
+    current_datetime = timezone.now()
+    tomorrow = current_datetime + timedelta(days=1)
+    pending_tasks = Task.objects.filter(task_owner = user, complete=False, deadline=tomorrow)
+    pending_tasks_count = pending_tasks.count()
 
-def contactPage(request):
-    pass
+    context = {'pending_tasks':pending_tasks, 'pending_tasks_count':pending_tasks_count, 'next':tomorrow}
+   
+    return render(request, 'basic/due_next.html', context)
+
+@login_required(login_url='login')
+def dueThisWeek(request):
+    user = request.user
+    current_datetime = timezone.now()
+    week = current_datetime + timedelta(days=7)
+    pending_tasks = Task.objects.filter(task_owner = user, complete=False, deadline__lt=week, deadline__gt=current_datetime)
+    pending_tasks_count = pending_tasks.count()
+
+    context = {'pending_tasks':pending_tasks, 'pending_tasks_count':pending_tasks_count, 'next':week}
+
+    return render(request, 'basic/due_next.html', context)
+
+@login_required(login_url='login')
+def dueThisMonth(request):
+    user = request.user
+    current_datetime = timezone.now()
+    month = current_datetime + timedelta(days=30)
+    pending_tasks = Task.objects.filter(task_owner = user, complete=False, deadline__lt=month, deadline__gt=current_datetime)
+    pending_tasks_count = pending_tasks.count()
+
+    context = {'pending_tasks':pending_tasks, 'pending_tasks_count':pending_tasks_count, 'next':month}
+   
+    return render(request, 'basic/due_next.html', context)

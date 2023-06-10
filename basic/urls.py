@@ -17,8 +17,8 @@ urlpatterns = [
     path('delete-task/<str:pk>',views.deleteTask, name='delete'),
     path('change-status/<str:pk>' , views.change_task_status, name='change-status' ), 
 
-
-    path('about/',views.aboutPage, name='about'),
-    path('contact/',views.contactPage, name='contact'),
+    path('due-tomorrow/',views.dueTomorrow, name='due-tomorrow'),
+    path('due-this-week/',views.dueThisWeek, name='due-this-week'),
+    path('due-this-month/',views.dueThisMonth, name='due-this-month'),
 
 ]

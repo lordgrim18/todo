@@ -1,4 +1,4 @@
-<h2>sidebar</h2>
+<!-- <h2>sidebar</h2>
 <hr>
 
 <div>
@@ -19,5 +19,74 @@
         </div>
         {% endif %} 
 
+    </div>
+</div> -->
+
+<style>
+    .sidebar {
+        position: fixed;
+        top: 100px; /* Adjust this value to create space between the sidebar and the elements above */
+        left: 0;
+        width: 200px;
+        background-color: #f2f2f2;
+        padding: 10px;
+        border-right: 2px solid #000;
+        border-top: 2px solid #000;
+        border-bottom: 2px solid #000;
+        height: calc(100vh - 120px);
+        overflow-y: auto;
+    }
+
+    .sidebar h2 {
+        margin-top: 0;
+    }
+
+    .sidebar hr {
+        margin-top: 10px;
+    }
+
+    .sidebar a {
+        display: block;
+        text-decoration: none;
+        margin-bottom: 10px;
+        padding: 5px;
+        border: 1px solid #000;
+        background-color: #fff;
+        font-weight: bold;
+    }
+
+    .content {
+        margin-top: 240px; /* Adjust this value to create space between the sidebar and the element below */
+    }
+</style>
+
+<div class="sidebar">
+    <h2>Sidebar</h2>
+    <hr>
+    <div>
+        <a href="{% url 'home' %}">Home</a>
+    </div>
+    <div>
+        {% if not request.user.is_authenticated %}
+        <div>
+            <a href="{% url 'login' %}">Login</a>
+        </div>
+        <div>
+            <a href="{% url 'register' %}">Sign up</a>
+        </div>
+        {% else %}
+        <div>
+            <a href="{% url 'create-task' %}">Create Task</a>
+        </div>
+        <div>
+            <a href="{% url 'due-tomorrow' %}">Due Tomorrow</a>
+        </div>
+        <div>
+            <a href="{% url 'due-this-week' %}">Due This Week</a>
+        </div>
+        <div>
+            <a href="{% url 'due-this-month' %}">Due This Month</a>
+        </div>
+        {% endif %}
     </div>
 </div>

@@ -1,12 +1,55 @@
 {% extends 'main.html' %}
 
 {% block content %}
+
+
 <div>
+    <form action="" method="POST">
+        {% csrf_token %}
+    
+        <div style="margin-bottom: 30px;">
+            {{ form.title.label_tag }}
+            {{ form.title }}
+        </div>
+    
+        <div style="margin-bottom: 30px;">
+            {{ form.deadline.label_tag }} <p>mm/dd/yyyy</p>
+            <input type="text" name="deadline" value="{{ form.deadline.value|date:'m/d/Y' }}" inputmode="numeric" pattern="\d{2}/\d{2}/\d{4}" placeholder="mm/dd/yyyy" required>
+        </div>
+    
+        <div style="margin-bottom: 30px;">
+            {{ form.complete.label_tag }}
+            {{ form.complete }}
+        </div>
+    
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+    
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+    
+<!-- <div>
     <form action="" method="POST">
         {% csrf_token %}
         {{form.as_p}}
         <input type="submit" value="Submit">
     </form>
-</div>
+</div> -->
 
 {% endblock %}

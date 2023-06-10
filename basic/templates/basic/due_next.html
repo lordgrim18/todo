@@ -1,0 +1,111 @@
+{% extends 'main.html' %}
+
+{%  block content %}
+    <h4>You have <i>{{ pending_tasks_count }} incomplete task{{ tasks_count|pluralize:'s' }}</i> due {{ next.date  }}</h4>
+    <h5>Set task status by clicking on them</h5>
+    <hr>
+    <style>
+        .table-container {
+          margin-bottom: 20px;
+        }
+      
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+      
+        caption {
+          font-weight: bold;
+          font-size: 18px;
+          margin-bottom: 10px;
+        }
+      
+        th,
+        td {
+          padding: 8px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+      
+        th {
+          background-color: #f2f2f2;
+        }
+      
+        .no-underline {
+          text-decoration: none;
+          color: inherit;
+        }
+      
+        .strike {
+          text-decoration: line-through;
+        }
+      
+        .btn-container {
+          display: flex;
+          gap: 5px;
+        }
+      
+        .btn {
+          padding: 5px 10px;
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;
+        }
+      
+        .btn-danger {
+          background-color: #7c7172;
+          color: rgb(43, 24, 24);
+        }
+      
+        .btn-info {
+          background-color: #141d27;
+          color: #fff;
+        }
+      
+        .table-separator {
+          margin-bottom: 30px;
+          border-bottom: 1px solid #ddd;
+        }
+      </style>
+      
+      <div class="table-container">
+        <table class="table">
+          <caption>Pending List Due {{ next.date }}</caption>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Completed</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in pending_tasks %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>
+                <a href="{% url 'change-status' task.id %}" title="Mark Pending" class="no-underline">
+                  <span>{{ task }}</span>
+                </a>
+              </td>
+              <td>
+                <a href="{% url 'change-status' task.id %}" title="Mark Completed" class="no-underline">
+                  <span>{{ task.complete }}</span>
+                </a>
+              </td>
+              <td>
+                <div class="btn-container">
+                  <a class="btn btn-danger" href="{% url 'delete' task.id %}">Delete</a>
+                  <a class="btn btn-info" href="{% url 'update-task' task.id %}">Update</a>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5">No items in list</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+{% endblock %}

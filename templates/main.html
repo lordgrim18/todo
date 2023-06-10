@@ -15,6 +15,7 @@
     <title>ToDo App</title>
 </head>
 <body>
+    <div id="top"></div>            
     {% include 'navbar.html' %}
 
     <!-- {% if messages %}
@@ -30,17 +31,17 @@
                 {% include 'side_bar.html' %}
             </div>
             
+            
             <div>
-                <h3>main body</h3>
                 {% block content %}
                 
                 {% endblock %}
                 <hr>
+            </div>
+        </div>
                 <div>
                     {% include 'addressbar.html' %}
                 </div>
-            </div>
-        </div>
         
 
 </body>
