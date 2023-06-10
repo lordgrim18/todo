@@ -4,6 +4,12 @@ from basic.models import Task
 from .serializers import TaskSerializer
 from basic.api import serializers
 
+# from django.shortcuts import render
+# from rest_framework import mixins
+# from rest_framework.permissions import IsAuthenticated
+# from rest_framework.views import APIView
+# from rest_framework import generics
+
 
 @api_view(['GET'])
 def apiRoutes(request):
@@ -39,7 +45,7 @@ def taskCreate(request):
 
 	return Response(serializer.data)
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def taskUpdate(request, pk):
 	task = Task.objects.get(id=pk)
 	serializer = TaskSerializer(instance=task, data=request.data)
